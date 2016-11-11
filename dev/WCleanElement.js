@@ -14,6 +14,10 @@ var WCleanElement = (function(window, document, undefined) {
         this._buildTemplates();
     };
 
+    WCleanElement.prototype.destroy = function() {
+        this._unwrap();
+    };
+
     WCleanElement.prototype._buildTemplates = function() {
         this._wrap();
     };

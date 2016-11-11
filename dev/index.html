@@ -26,22 +26,32 @@
             <option value="option-3">Option 3</option>
             <option value="option-4">Option 4</option>
         </select>
-        <select name="sel-3" class="unic" id="sel-3">
+        <select name="sel-3" class="sel" id="sel-3">
             <option value="option-1">Option 1</option>
             <option value="option-2">Option 2</option>
             <option value="option-3">Option 3</option>
             <option value="option-4">Option 4</option>
         </select>
+
+        <select name="unic" class="unic" id="unic">
+            <option value="option-1">Option 1</option>
+            <option value="option-2">Option 2</option>
+            <option value="option-3">Option 3</option>
+            <option value="option-4">Option 4</option>
+        </select>
+
+        <br>
+
         <button type="submit">Submit</button>
     </form>
 
     <script>
         var $selects = document.getElementsByClassName('sel');
-        var $select = document.getElementById('sel-3');
+        var $select = document.getElementById('unic');
 
-        // new WClean($select);
-        var s = new WClean($selects);
-        new WClean($select);
+        var selects = new WClean($selects);
+        selects.destroy();
+        var select = new WClean($select);
     </script>
 </body>
 </html>

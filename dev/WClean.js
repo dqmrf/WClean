@@ -1,6 +1,16 @@
+/**
+ * WClean - JavaScript Library.
+ * @description Custom Select for web applications written in clean JavaScript.
+ * @author Misha Pelykh.
+ * @version [in the development].
+ */
 var WClean = (function(window, document, undefined) {
     "use strict";
 
+    /**
+     * WClean - entry point.
+     * @param inputValue
+     */
     function WClean(inputValue) {
         this._inputValue = inputValue;
         this._children = [];
@@ -18,6 +28,12 @@ var WClean = (function(window, document, undefined) {
                 this._createChild(inputValue[i]);
             }
         }
+    };
+
+    WClean.prototype.destroy = function() {
+        this._children.forEach(function(elem, i) {
+            elem.destroy();
+        });
     };
 
     WClean.prototype._createChild = function(node) {
