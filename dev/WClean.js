@@ -10,10 +10,12 @@ var WClean = (function(window, document, undefined) {
     /**
      * WClean - entry point.
      * @param inputValue
+     * @param options
      */
-    function WClean(inputValue) {
+    function WClean(inputValue, options) {
         this._inputValue = inputValue;
-        this._children = [];
+        this._options = options;
+        this._elems = [];
 
         this.init();
     }
@@ -31,7 +33,7 @@ var WClean = (function(window, document, undefined) {
     };
 
     WClean.prototype.destroy = function() {
-        this._children.forEach(function(elem, i) {
+        this._elems.forEach(function(elem, i) {
             elem.destroy();
         });
     };
@@ -39,7 +41,7 @@ var WClean = (function(window, document, undefined) {
     WClean.prototype._createChild = function(node) {
         if ( wcleanIsNodeElement(node) && node.tagName == 'SELECT' ) {
             var child = new WCleanElement(node);
-            this._children.push(child);
+            this._elems.push(child);
         }
     };
 

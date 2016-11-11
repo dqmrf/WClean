@@ -3,7 +3,6 @@ var WCleanElement = (function(window, document, undefined) {
 
     function WCleanElement(select) {
         this._select = select;
-        this._wpapper = null;
 
         this.init();
     }
@@ -20,7 +19,38 @@ var WCleanElement = (function(window, document, undefined) {
 
     WCleanElement.prototype._buildTemplates = function() {
         this._wrap();
+        this._addNewSelect();
+        this._addTrigger();
     };
+
+    WCleanElement.prototype._addTrigger = function() {
+        var trigger = this._trigger = document.createElement('div');
+        var caption = document.createElement('span');
+
+        trigger.classList = 'WClean-trigger';
+        trigger.dataset.wcleanTrigger = true;
+        caption.classList = 'WClean-caption';
+        this._setTriggerText(caption);
+        trigger.appendChild(caption);
+
+        this._wpapper.appendChild(trigger);
+    };
+
+    WCleanElement.prototype._setTriggerText = function(caption) {
+        var select = this._select,
+            selChilds = select.children,
+            extHTML = selChilds[0].innerHTML;
+
+        for(var i = 0; i < selChilds.length; i++) {
+            if (selChilds[i].hasAttribute('selected')) {
+                extHTML = selChilds[i].innerHTML;
+            }
+        }
+
+        caption.innerHTML = extHTML;
+    };
+
+    WCleanElement.prototype._addNewSelect = function() {};
 
     WCleanElement.prototype._wrap = function() {
         var select = this._select;

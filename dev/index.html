@@ -28,7 +28,7 @@
         </select>
         <select name="sel-3" class="sel" id="sel-3">
             <option value="option-1">Option 1</option>
-            <option value="option-2">Option 2</option>
+            <option value="option-2" selected>Option 2</option>
             <option value="option-3">Option 3</option>
             <option value="option-4">Option 4</option>
         </select>
@@ -49,9 +49,12 @@
         var $selects = document.getElementsByClassName('sel');
         var $select = document.getElementById('unic');
 
-        var selects = new WClean($selects);
-        selects.destroy();
+        var selects = new WClean($selects, {
+            test: 'test'
+        });
         var select = new WClean($select);
+
+        // selects.destroy();
     </script>
 </body>
 </html>
