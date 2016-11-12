@@ -6,7 +6,7 @@
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Wild JS *clean</title>
-    <script src="helpers.js"></script>
+    <script src="WCleanHelpers.js"></script>
     <script src="WClean.js"></script>
     <script src="WCleanElement.js"></script>
     <!--<script src="test.js"></script>-->
@@ -27,10 +27,10 @@
             <option value="option-4">Option 4</option>
         </select>
         <select name="sel-3" class="sel" id="sel-3">
-            <option value="option-1">Option 1</option>
-            <option value="option-2" selected>Option 2</option>
-            <option value="option-3">Option 3</option>
-            <option value="option-4">Option 4</option>
+            <option>Option 1</option>
+            <option selected>Option 2</option>
+            <option>Option 3</option>
+            <option>Option 4</option>
         </select>
 
         <select name="unic" class="unic" id="unic">
@@ -50,11 +50,12 @@
         var $select = document.getElementById('unic');
 
         var selects = new WClean($selects, {
-            test: 'test'
+            extraClass: 'my-class',
+            dropdownIcon: ' <'
         });
-        var select = new WClean($select);
+//        var select = new WClean($select);
 
-        // selects.destroy();
+//         selects.destroy();
     </script>
 </body>
 </html>

@@ -1,75 +1,98 @@
 var WCleanElement = (function(window, document, undefined) {
     "use strict";
 
-    function WCleanElement(select) {
+    var _hp = WCleanHelpers;
+
+    function WCleanElement(select, options) {
         this._select = select;
+        this._options = options;
 
         this.init();
     }
 
     WCleanElement.prototype.init = function() {
-        var select = this._select;
-
         this._buildTemplates();
     };
 
     WCleanElement.prototype.destroy = function() {
-        this._unwrap();
+        this._destroyTemplates();
     };
 
     WCleanElement.prototype._buildTemplates = function() {
         this._wrap();
-        this._addNewSelect();
-        this._addTrigger();
-    };
 
-    WCleanElement.prototype._addTrigger = function() {
-        var trigger = this._trigger = document.createElement('div');
-        var caption = document.createElement('span');
+        this._trigger = document.createElement('div');
+        this._newSelect = document.createElement('ul');
+        this._caption = document.createElement('span');
+        this._icon = null;
 
-        trigger.classList = 'WClean-trigger';
-        trigger.dataset.wcleanTrigger = true;
-        caption.classList = 'WClean-caption';
-        this._setTriggerText(caption);
-        trigger.appendChild(caption);
+        this._select.classList.add('WClean-select');
+        this._trigger.classList = 'WClean-trigger';
+        this._caption.classList = 'WClean-caption';
+        this._newSelect.classList = 'WClean-new-select';
 
-        this._wpapper.appendChild(trigger);
-    };
+        var options = this._select.children;
+        var triggerCaptionHTML = options[0].innerHTML;
 
-    WCleanElement.prototype._setTriggerText = function(caption) {
-        var select = this._select,
-            selChilds = select.children,
-            extHTML = selChilds[0].innerHTML;
+        for (var i = 0; i < options.length; i++) {
+            var option = options[i];
+            var newOption = document.createElement('li');
 
-        for(var i = 0; i < selChilds.length; i++) {
-            if (selChilds[i].hasAttribute('selected')) {
-                extHTML = selChilds[i].innerHTML;
+            if (option.tagName !== 'OPTION') continue;
+
+            if (option.hasAttribute('selected')) {
+                newOption.dataset.selected = 'selected';
+                triggerCaptionHTML = option.innerHTML;
             }
+
+            if (option.hasAttribute('value')) {
+                newOption.dataset.value = option.getAttribute('value');
+            }
+            newOption.innerHTML = option.innerHTML;
+            this._newSelect.appendChild(newOption);
         }
 
-        caption.innerHTML = extHTML;
+        this._caption.innerHTML = triggerCaptionHTML;
+        this._trigger.appendChild(this._caption);
+
+        if (this._options.dropdownIcon) {
+            this._icon = document.createElement('span');
+            this._icon.classList = 'WClean-icon';
+            this._icon.innerHTML = this._options.dropdownIcon;
+            this._trigger.appendChild(this._icon);
+        }
+
+        this._wrapper.appendChild(this._trigger);
+        this._wrapper.appendChild(this._newSelect);
     };
 
-    WCleanElement.prototype._addNewSelect = function() {};
+    WCleanElement.prototype._destroyTemplates = function() {
+        this._wrapper.removeChild(this._trigger);
+        this._wrapper.removeChild(this._newSelect);
+        this._select.classList.remove('WClean-select');
+
+        this._unwrap();
+    };
+
 
     WCleanElement.prototype._wrap = function() {
-        var select = this._select;
-        var wrapper = this._wpapper = document.createElement('div');
+        this._wrapper = document.createElement('div');
 
-        select.dataset.wcleanSelect = true;
-        wrapper.classList = 'WClean-wrapper WClean-outer';
-        wrapper.dataset.wcleanWrapper = true;
-        select.parentNode.insertBefore(wrapper, select);
-        wrapper.appendChild(select);
+        this._wrapper.classList = 'WClean-wrapper WClean-outer';
+        if (this._options.extraClass) this._wrapper.classList.add(this._options.extraClass);
+
+        this._wrapper.dataset.wcleanWrapper = true;
+
+        this._select.parentNode.insertBefore(this._wrapper, this._select);
+        this._wrapper.appendChild(this._select);
     };
 
     WCleanElement.prototype._unwrap = function() {
-        var select = this._select;
-        var wrapper = this._wpapper;
+        var wrapperParent = this._wrapper.parentNode;
 
-        wrapper.parentNode.insertBefore(select, wrapper);
-        wrapper.parentNode.removeChild(wrapper);
-        this._wpapper = null;
+        wrapperParent.insertBefore(this._select, this._wrapper);
+        wrapperParent.removeChild(this._wrapper);
+        this._wrapper = null;
     };
 
     return WCleanElement;
