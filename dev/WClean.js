@@ -29,25 +29,6 @@ var WClean = (function(window, document, undefined) {
 
     $.elems = [];
 
-    $.toggle = function(elem) {
-        elem.classList.toggle('WClean-open');
-        elem.wcOpen = !elem.wcOpen;
-    };
-
-    $.close = function(elem) {
-        elem.classList.remove('WClean-open');
-        elem.wcOpen = false;
-    };
-
-    $.closeAll = function() {
-        $.elems.forEach(function(elem) {
-            if (elem._wrapper.wcOpen) {
-                elem._wrapper.wcOpen = false;
-                elem._wrapper.classList.remove('WClean-open');
-            }
-        });
-    };
-
     WClean.prototype = new Object({
 
         _setEventListeners: function() {
@@ -72,7 +53,12 @@ var WClean = (function(window, document, undefined) {
                 target = target.parentNode;
             }
 
-            $.closeAll();
+            $.elems.forEach(function(elem) {
+                if (elem._wrapper.wcOpen) {
+                    elem._wrapper.wcOpen = false;
+                    elem._wrapper.classList.remove('WClean-open');
+                }
+            });
         },
 
         _onClick: function(event) {
@@ -90,13 +76,18 @@ var WClean = (function(window, document, undefined) {
 
             switch (target.wcElement) {
                 case 'trigger':
-                    $.toggle(wrapper);
+
+                    wrapper.classList.toggle('WClean-open');
+                    wrapper.wcOpen = !wrapper.wcOpen;
                     return;
 
                 case 'newSelect':
+
                     if (wrapper.wcOpen) {
                         var childs = wrapper.children;
-                        $.close(wrapper);
+
+                        wrapper.classList.remove('WClean-open');
+                        wrapper.wcOpen = false;
 
                         for (var i = 0; i < childs.length; i++) {
                             if (childs[i].wcElement == 'trigger') {
@@ -148,6 +139,7 @@ var WClean = (function(window, document, undefined) {
         },
 
         update: function(newOptions) {
+            // ...
             this.destroy();
             this.init();
         }
