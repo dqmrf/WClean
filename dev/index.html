@@ -9,11 +9,10 @@
     <script src="WCleanHelpers.js"></script>
     <script src="WClean.js"></script>
     <script src="WCleanElement.js"></script>
-    <!--<script src="test.js"></script>-->
 </head>
 <body>
     
-    <form action="index.php" method="POST">
+    <!--<form action="index.php" method="POST">-->
         <select name="sel-1" class="sel" id="sel-1">
             <option value="option-1">Option 1</option>
             <option value="option-2">Option 2</option>
@@ -43,19 +42,21 @@
         <br>
 
         <button type="submit">Submit</button>
-    </form>
+    <!--</form>-->
 
     <script>
         var $selects = document.getElementsByClassName('sel');
         var $select = document.getElementById('unic');
 
         var selects = new WClean($selects, {
-            extraClass: 'my-class',
+            /*extraClass: 'my-class',*/
             dropdownIcon: ' <'
         });
-//        var select = new WClean($select);
+        var select = new WClean($select);
 
-//         selects.destroy();
+        selects.destroy();
+        // select.destroy();
+
     </script>
 </body>
 </html>
