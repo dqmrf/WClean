@@ -2,7 +2,7 @@
  * WClean - JavaScript Library.
  * @description Custom Select for web applications written in clean JavaScript.
  * @author Misha Pelykh.
- * @version 0.0.0 (in the development).
+ * @version 1.0.0 alpha (in the development).
  */
 var WClean = (function(window, document, undefined) {
     "use strict";
