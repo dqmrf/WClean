@@ -62,9 +62,8 @@ var WClean = (function(window, document, undefined) {
         },
 
         _onClick: function(event) {
-            var target = event.target;
-            var prevTarget;
-            var wrapper;
+            var target = event.target,
+                prevTarget, wrapper;
 
             while (target !== document || target.wcElement) {
                 if (target.wcElement) break;
@@ -83,16 +82,38 @@ var WClean = (function(window, document, undefined) {
 
                 case 'newSelect':
 
-                    if (wrapper.wcOpen) {
-                        var childs = wrapper.children;
+                    if (!wrapper.wcOpen) return;
 
-                        wrapper.classList.remove('WClean-open');
-                        wrapper.wcOpen = false;
+                    var wrapperChilds = wrapper.children,
+                        newOptions = Array.prototype.slice.call(target.children),
+                        index = newOptions.indexOf(prevTarget);
 
-                        for (var i = 0; i < childs.length; i++) {
-                            if (childs[i].wcElement == 'trigger') {
-                                childs[i].firstElementChild.innerHTML = prevTarget.innerHTML;
-                            }
+                    wrapper.classList.remove('WClean-open');
+                    wrapper.wcOpen = false;
+
+                    for (var i = 0; i < wrapperChilds.length; i++) {
+                        var child = wrapperChilds[i];
+
+                        if (!child.wcElement || child.wcElement == 'newSelect') continue;
+
+                        console.log('ITERATE');
+
+                        switch (child.wcElement) {
+                            case 'trigger':
+                                child.firstElementChild.innerHTML = prevTarget.innerHTML;
+                                break;
+                            case 'select':
+                                for (var j = 0; j < newOptions.length; j++) {
+                                    console.log('iterate');
+                                    if (newOptions[j].dataset.selected) {
+                                        delete newOptions[j].dataset.selected;
+                                        child.children[j].removeAttribute('selected');
+                                        break;
+                                    }
+                                }
+                                prevTarget.dataset.selected = 'selected';
+                                child.children[index].setAttribute('selected', 'selected');
+                                break;
                         }
                     }
                     return;

@@ -23,6 +23,8 @@ var WCleanElement = (function(window, document, undefined) {
 
             this._trigger.wcElement = 'trigger';
             this._newSelect.wcElement = 'newSelect';
+            this._select.wcElement = 'select';
+
             this._select.classList.add('WClean-select');
             this._trigger.classList = 'WClean-trigger';
             this._caption.classList = 'WClean-caption';
