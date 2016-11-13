@@ -125,8 +125,28 @@ var WClean = (function(window, document, undefined) {
             }
         },
 
+        _insertCSSTag: function() {
+            if ($.instance !== 0) return;
+
+            var css = WCleanStyle;
+            var head = document.head || document.getElementsByTagName('head')[0],
+                style = document.createElement('style');
+
+            style.type = 'text/css';
+
+            if (style.styleSheet){
+                style.styleSheet.cssText = css;
+            } else {
+                style.appendChild(document.createTextNode(css));
+            }
+
+            head.appendChild(style);
+        },
+
         init: function() {
             var inputValue = this._inputValue;
+
+            $.css = this._insertCSSTag();
 
             if (hp_.isNodeElement(inputValue)) {
                 this._createChild(inputValue);
