@@ -96,15 +96,12 @@ var WClean = (function(window, document, undefined) {
 
                         if (!child.wcElement || child.wcElement == 'newSelect') continue;
 
-                        console.log('ITERATE');
-
                         switch (child.wcElement) {
                             case 'trigger':
                                 child.firstElementChild.innerHTML = prevTarget.innerHTML;
                                 break;
                             case 'select':
                                 for (var j = 0; j < newOptions.length; j++) {
-                                    console.log('iterate');
                                     if (newOptions[j].dataset.selected) {
                                         delete newOptions[j].dataset.selected;
                                         child.children[j].removeAttribute('selected');
