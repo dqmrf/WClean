@@ -31,18 +31,51 @@ var WClean = (function(window, document, undefined) {
 
     WClean.prototype = new Object({
 
-        _setEventListeners: function() {
-            if ($.instance !== 0) return;
+        init: function() {
+            var inputValue = this._inputValue;
 
-            document.addEventListener('click', this._onClick);
-            document.addEventListener('mousedown', this._onMouseDown);
+            $.css = this._insertCSSTag();
+
+            if (hp_.isNodeElement(inputValue)) {
+                this._createChild(inputValue);
+            } else if (hp_.isNodeList(inputValue) && inputValue.length) {
+                for (var i = 0; i < inputValue.length; i++) {
+                    this._createChild(inputValue[i]);
+                }
+            }
+
+            this._setEventListeners();
+            $.instance++;
         },
 
-        _unsetEventListeners: function() {
-            if ($.instance !== 0) return;
+        destroy: function() {
+            $.instance--;
 
-            document.removeEventListener('click', this._onClick);
-            document.removeEventListener('mousedown', this._onMouseDown);
+            this._elems.forEach(function(elem) {
+                var index = $.elems.indexOf(elem);
+
+                if (index >= 0) {
+                    $.elems.splice(index, 1);
+                }
+
+                elem.destroy();
+            });
+
+            this._unsetEventListeners();
+        },
+
+        update: function(newOptions) {
+            // ...
+            this.destroy();
+            this.init();
+        }
+
+        _createChild: function(node) {
+            if ( hp_.isNodeElement(node) && node.tagName == 'SELECT' ) {
+                var child = new WCleanElement(node, this._options);
+                this._elems.push(child);
+                $.elems.push(child);
+            }
         },
 
         _onMouseDown: function(event) {
@@ -117,12 +150,18 @@ var WClean = (function(window, document, undefined) {
             }
         },
 
-        _createChild: function(node) {
-            if ( hp_.isNodeElement(node) && node.tagName == 'SELECT' ) {
-                var child = new WCleanElement(node, this._options);
-                this._elems.push(child);
-                $.elems.push(child);
-            }
+        _setEventListeners: function() {
+            if ($.instance !== 0) return;
+
+            document.addEventListener('click', this._onClick);
+            document.addEventListener('mousedown', this._onMouseDown);
+        },
+
+        _unsetEventListeners: function() {
+            if ($.instance !== 0) return;
+
+            document.removeEventListener('click', this._onClick);
+            document.removeEventListener('mousedown', this._onMouseDown);
         },
 
         _insertCSSTag: function() {
@@ -141,45 +180,6 @@ var WClean = (function(window, document, undefined) {
             }
 
             head.appendChild(style);
-        },
-
-        init: function() {
-            var inputValue = this._inputValue;
-
-            $.css = this._insertCSSTag();
-
-            if (hp_.isNodeElement(inputValue)) {
-                this._createChild(inputValue);
-            } else if (hp_.isNodeList(inputValue) && inputValue.length) {
-                for (var i = 0; i < inputValue.length; i++) {
-                    this._createChild(inputValue[i]);
-                }
-            }
-
-            this._setEventListeners();
-            $.instance++;
-        },
-
-        destroy: function() {
-            $.instance--;
-
-            this._elems.forEach(function(elem) {
-                var index = $.elems.indexOf(elem);
-
-                if (index >= 0) {
-                    $.elems.splice(index, 1);
-                }
-
-                elem.destroy();
-            });
-
-            this._unsetEventListeners();
-        },
-
-        update: function(newOptions) {
-            // ...
-            this.destroy();
-            this.init();
         }
     });
 
